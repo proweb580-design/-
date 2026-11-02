@@ -1,0 +1,14 @@
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env.local
+
+# Локальный RAG-индекс и кэш моделей пересоздаются автоматически
+data/
+.cache/
+
+# Документы центра не коммитим, папку оставляем
+documents/*
+!documents/.gitkeep
