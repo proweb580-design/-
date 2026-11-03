@@ -51,7 +51,8 @@ function groupSources(sources: SourceRef[]) {
 let nextId = 0;
 const newId = () => `m${++nextId}`;
 
-export function Chat() {
+/** embedded: чат заполняет родителя (панель виджета) без своей рамки и фиксированной высоты. */
+export function Chat({ embedded = false }: { embedded?: boolean }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -152,7 +153,7 @@ export function Chat() {
   }
 
   return (
-    <div className="flex h-[620px] max-h-[80dvh] flex-col overflow-hidden rounded-card border border-line bg-surface">
+    <div className={`flex flex-col overflow-hidden bg-surface ${embedded ? "h-full" : "h-[620px] max-h-[80dvh] rounded-card border border-line"}`}>
       <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-3 text-sm text-muted">
         <span className="flex items-center gap-2">
           <FileTextIcon size={18} />
@@ -195,7 +196,7 @@ export function Chat() {
                   key={s}
                   type="button"
                   onClick={() => ask(s)}
-                  className="shrink-0 snap-start rounded-control border border-line bg-bg px-3.5 py-2 text-sm transition-[transform,border-color] hover:border-fg/40 active:scale-[0.98]"
+                  className="shrink-0 snap-start rounded-full border border-line bg-bg px-3.5 py-2 text-sm transition-[transform,border-color] hover:border-fg/40 active:scale-[0.98]"
                 >
                   {s}
                 </button>
@@ -273,7 +274,7 @@ export function Chat() {
             type="submit"
             disabled={busy || !input.trim()}
             aria-label="Отправить вопрос"
-            className="flex size-11 shrink-0 items-center justify-center rounded-control bg-accent text-accent-fg transition-transform active:scale-[0.96] disabled:opacity-50"
+            className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent text-accent-fg transition-transform active:scale-[0.96] disabled:opacity-50"
           >
             <ArrowUpIcon size={20} weight="bold" />
           </button>

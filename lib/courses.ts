@@ -13,14 +13,14 @@ export const courses: Course[] = [
     title: "Веб-разработка",
     summary: "От первой вёрстки до приложения на React с сервером и базой данных.",
     skills: ["HTML и CSS", "JavaScript", "React", "Node.js"],
-    image: "https://picsum.photos/seed/stupen-web-developer-laptop/1200/900",
+    image: "/courses/web.png",
   },
   {
     id: "design",
     title: "UX/UI-дизайн",
     summary: "Исследования, прототипы и интерфейсы в Figma.",
     skills: ["Figma", "Прототипы", "UX-исследования"],
-    image: "https://picsum.photos/seed/stupen-ui-design-sketch/900/700",
+    image: "/courses/design.png",
   },
   {
     id: "marketing",
@@ -34,14 +34,14 @@ export const courses: Course[] = [
     title: "Аналитика данных",
     summary: "Таблицы, SQL и дашборды для решений в бизнесе.",
     skills: ["Excel", "SQL", "Python", "Дашборды"],
-    image: "https://picsum.photos/seed/stupen-data-analytics-charts/1200/700",
+    image: "/courses/analytics.png",
   },
   {
     id: "management",
     title: "Управление проектами",
     summary: "Планирование, работа с командой и запуск digital-продуктов.",
     skills: ["Agile", "Scrum", "Jira"],
-    image: "https://picsum.photos/seed/stupen-project-planning/1200/700",
+    image: "/courses/management.png",
   },
 ];
 

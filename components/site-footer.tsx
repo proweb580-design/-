@@ -3,7 +3,7 @@ import { container } from "@/lib/ui";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line py-10">
+    <footer className="on-dark py-10">
       <div className={`${container} flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between`}>
         <div>
           <Logo />

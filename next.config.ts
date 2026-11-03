@@ -8,7 +8,10 @@ const nextConfig: NextConfig = {
   // Эмбеддинги считаются в отдельном процессе (lib/rag/embed-worker.mjs) и в бандл не попадают.
   serverExternalPackages: ["unpdf", "mammoth"],
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "picsum.photos" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "picsum.photos" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+    ],
   },
 };
 

@@ -27,7 +27,7 @@ const items = [
 
 export function Faq() {
   return (
-    <section id="faq" className="border-y border-line bg-surface py-20 md:py-28">
+    <section id="faq" className="panel-in on-dark mx-2 rounded-panel sm:mx-3 bg-bg py-20 md:py-28">
       <div className={`${container} grid gap-10 md:grid-cols-[4fr_8fr] md:gap-16`}>
         <Reveal className="md:sticky md:top-24 md:self-start">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Частые вопросы</h2>

@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-/** Появление блока при входе в экран. Показывает порядок чтения; при reduced motion блок статичен. */
+/** Появление блока при входе в экран: всплывает и проясняется из лёгкого размытия. При reduced motion блок статичен. */
 export function Reveal({
   children,
   delay = 0,
@@ -16,10 +16,10 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reduce ? false : { opacity: 0, y: 28, filter: "blur(6px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>

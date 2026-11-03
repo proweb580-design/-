@@ -1,40 +1,41 @@
 @import "tailwindcss";
 
 /*
- * Палитра: нейтральный цинк + один акцент (жжёный оранжевый).
- * Тема следует системной настройке; все цвета проверены на контраст WCAG AA.
- * Скругления: элементы управления 10px, карточки и фото 18px.
+ * Палитра: тёплый крем + графит, акценты закатными градиентами (персик, роза).
+ * Светлые панели используют :root, тёмные панели помечаются классом .on-dark,
+ * который переопределяет те же токены, поэтому компоненты работают в обоих.
+ * Скругления: поля 12px, кнопки и чипы — пилюли, карточки 24px, панели секций 36px.
  * Слои z-index: шапка 30, больше слоёв на странице нет.
  */
 :root {
-  --bg: #f6f6f7;
-  --surface: #fdfdfd;
-  --surface-2: #ececef;
-  --fg: #17171a;
-  --muted: #55555e;
-  --line: #dcdce1;
-  --accent: #c2410c;
-  --accent-fg: #fff8f3;
-  --accent-soft: #fbe6da;
+  --ink: #1a1818;
+  --bg: #f3eee8;
+  --surface: #fdfbf9;
+  --surface-2: #e9e1d9;
+  --fg: #1f1d1d;
+  --muted: #5d5650;
+  --line: #ddd4cb;
+  --accent: #1f1d1d;
+  --accent-fg: #fdfbf9;
+  --accent-soft: #f6d3c3;
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d0d10;
-    --surface: #16161a;
-    --surface-2: #1f1f25;
-    --fg: #f2f2f4;
-    --muted: #a3a3ad;
-    --line: #2b2b33;
-    --accent: #fb8a4c;
-    --accent-fg: #1d0b02;
-    --accent-soft: #33190b;
-    color-scheme: dark;
-  }
+.on-dark {
+  --bg: #252221;
+  --surface: #2e2a29;
+  --surface-2: #3a3533;
+  --fg: #f4efe9;
+  --muted: #b8aea6;
+  --line: #433d3b;
+  --accent: #f4efe9;
+  --accent-fg: #1f1d1d;
+  --accent-soft: #4a3631;
+  color: var(--fg);
 }
 
 @theme inline {
+  --color-ink: var(--ink);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -44,10 +45,11 @@
   --color-accent: var(--accent);
   --color-accent-fg: var(--accent-fg);
   --color-accent-soft: var(--accent-soft);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-onest);
   --font-mono: var(--font-geist-mono);
-  --radius-control: 10px;
-  --radius-card: 18px;
+  --radius-control: 12px;
+  --radius-card: 24px;
+  --radius-panel: 36px;
 }
 
 html {
@@ -63,6 +65,40 @@ html {
   .rise {
     animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+
+  /* Слова заголовка по очереди выезжают из-под маски. */
+  .word-up {
+    animation: word-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Панели секций чуть увеличиваются до полного размера, пока въезжают в экран. Только в браузерах со scroll-driven анимациями. */
+  @supports (animation-timeline: view()) {
+    .panel-in {
+      animation: panel-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+      transform-origin: 50% 0;
+    }
+  }
+
+  /* Плавное раскрытие и закрытие details (вопросы, шаги обучения). */
+  @supports selector(::details-content) {
+    :root {
+      interpolate-size: allow-keywords;
+    }
+
+    details::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        content-visibility 0.45s allow-discrete;
+    }
+
+    details[open]::details-content {
+      block-size: auto;
+    }
+  }
 }
 
 @keyframes rise {
@@ -72,17 +108,30 @@ html {
   }
 }
 
+@keyframes word-up {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+}
+
 body {
-  background: var(--bg);
+  background: var(--ink);
   color: var(--fg);
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--accent-fg);
+  background: #e9e1d9;
+  color: #1f1d1d;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid #b8aea6;
   outline-offset: 2px;
 }

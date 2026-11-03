@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
+import { Onest } from "next/font/google";
 import "./globals.css";
+
+const onest = Onest({ subsets: ["latin", "cyrillic"], variable: "--font-onest", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Ступень. Учебный центр digital-профессий",
@@ -10,16 +12,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f6f7" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d0d10" },
-  ],
+  themeColor: "#f3eee8",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="min-h-[100dvh] bg-bg font-sans text-fg antialiased">{children}</body>
+    <html lang="ru" className={`${onest.variable} ${GeistMono.variable}`}>
+      <body className="min-h-[100dvh] bg-ink font-sans text-fg antialiased">{children}</body>
     </html>
   );
 }

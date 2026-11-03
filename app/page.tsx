@@ -1,5 +1,6 @@
 import { ApplySection } from "@/components/apply-section";
 import { AssistantSection } from "@/components/assistant-section";
+import { ChatWidget } from "@/components/chat-widget";
 import { Courses } from "@/components/courses";
 import { Faq } from "@/components/faq";
 import { Hero } from "@/components/hero";
@@ -11,7 +12,7 @@ export default function HomePage() {
   return (
     <>
       <SiteHeader />
-      <main>
+      <main className="flex flex-col gap-3 pb-3">
         <Hero />
         <Courses />
         <LearningPath />
@@ -20,6 +21,7 @@ export default function HomePage() {
         <ApplySection />
       </main>
       <SiteFooter />
+      <ChatWidget />
     </>
   );
 }
