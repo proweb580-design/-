@@ -59,10 +59,9 @@ export function LearningPath() {
           <p className="mt-4 max-w-[40ch] text-lg leading-relaxed text-muted">
             Путь от первого занятия до готового портфолио.
           </p>
-          {/* TODO: заменить на реальное фото наставника со студентом, 1000x750 */}
           <div className="relative mt-8 aspect-[4/3] overflow-hidden rounded-card bg-surface-2">
             <Image
-              src="https://picsum.photos/seed/stupen-mentor-session/1000/750"
+              src="/mentor-session.jpg"
               alt="Наставник разбирает задание со студентом"
               fill
               sizes="(min-width: 768px) 33vw, 100vw"
