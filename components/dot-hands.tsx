@@ -3,8 +3,7 @@
 import { useEffect, useRef } from "react";
 
 // Лист 2×2 с чёрно-белыми фото рук; канвас превращает его яркость в точечный LED-растр.
-const SHEET =
-  "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261030_025250_100df7b8-31fd-4614-aa4a-c1b7d5b6b273.png&w=1600&q=85";
+const SHEET = "/hero-hands.png";
 
 // [x, y, w, h] в долях листа. Поза A: указывающие руки, поза B: раскрытые.
 const SRC = {
@@ -214,7 +213,6 @@ export function DotHands() {
     }
 
     const img = new Image();
-    img.crossOrigin = "anonymous"; // иначе getImageData запрещён для чужого домена
     img.onload = () => {
       for (const key of Object.keys(SRC) as Key[]) {
         const [x, y, w, h] = SRC[key];
