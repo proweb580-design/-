@@ -7,6 +7,7 @@ import { Hero } from "@/components/hero";
 import { LearningPath } from "@/components/learning-path";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { WhyUs } from "@/components/why-us";
 
 export default function HomePage() {
   return (
@@ -15,6 +16,7 @@ export default function HomePage() {
       <main className="flex flex-col gap-3 pb-3">
         <Hero />
         <Courses />
+        <WhyUs />
         <LearningPath />
         <AssistantSection />
         <Faq />
