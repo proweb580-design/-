@@ -10,9 +10,9 @@ export function SiteFooter() {
           <p className="mt-2 text-sm text-muted">Учебный центр digital-профессий</p>
         </div>
         <nav aria-label="Разделы в подвале" className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-          <a href="#courses" className="hover:text-fg">Направления</a>
-          <a href="#assistant" className="hover:text-fg">Ассистент</a>
-          <a href="#faq" className="hover:text-fg">Вопросы</a>
+          <a href="/#courses" className="hover:text-fg">Направления</a>
+          <a href="/#assistant" className="hover:text-fg">Ассистент</a>
+          <a href="/#faq" className="hover:text-fg">Вопросы</a>
           <a href="#apply" className="hover:text-fg">Записаться</a>
         </nav>
         <p className="text-sm text-muted">© {new Date().getFullYear()} Ступень</p>

@@ -2,7 +2,7 @@ import { ApplyForm } from "./apply-form";
 import { Reveal } from "./reveal";
 import { container } from "@/lib/ui";
 
-export function ApplySection() {
+export function ApplySection({ course }: { course?: string }) {
   return (
     <section id="apply" className="panel-in mx-2 rounded-panel sm:mx-3 bg-[linear-gradient(135deg,#f4efe9,#e9e2da)] py-20 md:py-28">
       <div className={container}>
@@ -12,7 +12,7 @@ export function ApplySection() {
             Оставьте контакты. Менеджер позвонит, ответит на вопросы и подберёт группу.
           </p>
           <div className="mt-8">
-            <ApplyForm />
+            <ApplyForm defaultCourse={course} />
           </div>
         </Reveal>
       </div>

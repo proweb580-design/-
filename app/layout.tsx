@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${onest.variable} ${GeistMono.variable}`}>
+    <html lang="ru" data-scroll-behavior="smooth" className={`${onest.variable} ${GeistMono.variable}`}>
       <body className="min-h-[100dvh] bg-ink font-sans text-fg antialiased">{children}</body>
     </html>
   );

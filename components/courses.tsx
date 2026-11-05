@@ -1,10 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Reveal } from "./reveal";
 import { courses, type Course } from "@/lib/courses";
 import { container } from "@/lib/ui";
 
 // Свой цвет у каждого направления: подпись и навыки текстом, свечение под фото.
-const tones: Record<Course["id"], { text: string; glow: string }> = {
+export const tones: Record<Course["id"], { text: string; glow: string }> = {
   web: { text: "text-[#5ea8ff]", glow: "#1d4ed8" },
   design: { text: "text-[#a78bfa]", glow: "#6d28d9" },
   marketing: { text: "text-[#fb923c]", glow: "#c2410c" },
@@ -15,7 +16,10 @@ const tones: Record<Course["id"], { text: string; glow: string }> = {
 function CourseCard({ course }: { course: Course }) {
   const tone = tones[course.id];
   return (
-    <article className="group relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-card border border-white/10 bg-[#0e0e10] p-6 text-white transition-[transform,border-color] duration-500 hover:-translate-y-1 hover:border-white/25 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+    <Link
+      href={`/courses/${course.id}`}
+      className="group relative flex h-full min-h-[420px] flex-col overflow-hidden rounded-card border border-white/10 bg-[#0e0e10] p-6 text-white transition-[transform,border-color] duration-500 hover:-translate-y-1 hover:border-white/25 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+    >
       {/* Своя иллюстрация показывается как есть; фото-заглушка тонируется цветом направления через luminosity. */}
       <div
         className="absolute inset-x-0 bottom-0 isolate h-[60%] transition-transform duration-700 ease-out group-hover:-translate-y-3 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0 motion-reduce:group-hover:scale-100"
@@ -32,7 +36,10 @@ function CourseCard({ course }: { course: Course }) {
         <p className="mt-3 text-sm leading-relaxed text-white/70">{course.summary}</p>
         <p className={`mt-3 text-sm ${tone.text}`}>{course.skills.join(", ")}</p>
       </div>
-    </article>
+      <span className="relative mt-auto self-start rounded-full bg-white/10 px-4 py-1.5 text-sm backdrop-blur-md transition-colors group-hover:bg-white/20">
+        Подробнее →
+      </span>
+    </Link>
   );
 }
 

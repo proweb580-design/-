@@ -18,7 +18,7 @@ function validate(data: Record<string, string>): Errors {
   return errors;
 }
 
-export function ApplyForm() {
+export function ApplyForm({ defaultCourse = "" }: { defaultCourse?: string }) {
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
 
@@ -101,7 +101,7 @@ export function ApplyForm() {
         <label htmlFor="lead-course" className="text-sm font-medium">
           Направление
         </label>
-        <select id="lead-course" name="course" defaultValue="" className={field} aria-invalid={!!errors.course} aria-describedby="lead-course-error">
+        <select id="lead-course" name="course" defaultValue={defaultCourse} className={field} aria-invalid={!!errors.course} aria-describedby="lead-course-error">
           <option value="" disabled>
             Выберите направление
           </option>
