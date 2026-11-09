@@ -10,7 +10,11 @@ import { loadIndex, saveIndex, search, type RagIndex, type SearchHit } from "./s
  * Одна база знаний на процесс. Источники перечислены здесь. Папка Google Drive
  * подключается, если заданы переменные GOOGLE_* в .env.
  */
-const sources: DocumentSource[] = [new LocalFolderSource(ragConfig.documentsDir)];
+// На Vercel папки documents нет: локальный источник там не синхронизируем,
+// иначе индексатор удалит из общего индекса документы, загруженные локально.
+const sources: DocumentSource[] = process.env.VERCEL
+  ? []
+  : [new LocalFolderSource(ragConfig.documentsDir)];
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN, GOOGLE_DRIVE_FOLDER_ID } = process.env;
 if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_REFRESH_TOKEN && GOOGLE_DRIVE_FOLDER_ID) {
   sources.push(
