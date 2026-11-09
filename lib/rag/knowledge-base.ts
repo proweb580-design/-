@@ -1,15 +1,26 @@
 import { ragConfig } from "./config";
 import { embed } from "./embed";
 import { syncSource, type SyncReport } from "./indexer";
+import { GoogleDriveSource } from "./drive";
 import { LocalFolderSource } from "./loader";
 import type { DocumentSource } from "./source";
 import { loadIndex, saveIndex, search, type RagIndex, type SearchHit } from "./store";
 
 /**
- * Одна база знаний на процесс. Источники перечислены здесь: когда появится
- * Google Drive, он добавится в этот список.
+ * Одна база знаний на процесс. Источники перечислены здесь. Папка Google Drive
+ * подключается, если заданы переменные GOOGLE_* в .env.
  */
 const sources: DocumentSource[] = [new LocalFolderSource(ragConfig.documentsDir)];
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN, GOOGLE_DRIVE_FOLDER_ID } = process.env;
+if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_REFRESH_TOKEN && GOOGLE_DRIVE_FOLDER_ID) {
+  sources.push(
+    new GoogleDriveSource(GOOGLE_DRIVE_FOLDER_ID, {
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      refreshToken: GOOGLE_REFRESH_TOKEN,
+    }),
+  );
+}
 
 let current: RagIndex | null = null;
 let syncing: Promise<SyncReport[]> | null = null;
