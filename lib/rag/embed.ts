@@ -1,6 +1,7 @@
 import { fork, type ChildProcess } from "node:child_process";
 import path from "node:path";
 import { ragConfig } from "./config";
+import { getGemini } from "./gemini";
 
 export type EmbedKind = "query" | "passage";
 export type Embedder = (texts: string[], kind: EmbedKind) => Promise<number[][]>;
@@ -31,7 +32,7 @@ function getWorker(): ChildProcess {
   if (worker) return worker;
   const child = fork(
     path.join(process.cwd(), "lib", "rag", "embed-worker.mjs"),
-    [ragConfig.embeddingModel, ragConfig.modelCacheDir],
+    [ragConfig.localEmbeddingModel, ragConfig.modelCacheDir],
     { stdio: ["ignore", "inherit", "inherit", "ipc"] },
   );
   child.on("message", (msg: { id: number; vectors?: number[][]; error?: string }) => {
@@ -53,7 +54,7 @@ function getWorker(): ChildProcess {
 }
 
 /** Локальные эмбеддинги, нормализованные: косинусная близость = скалярное произведение. */
-export const embed: Embedder = async (texts, kind) => {
+const localEmbed: Embedder = async (texts, kind) => {
   if (texts.length === 0) return [];
   if (unavailable) throw unavailable;
   const id = ++seq;
@@ -63,3 +64,30 @@ export const embed: Embedder = async (texts, kind) => {
     getWorker().send({ id, texts: texts.map((t) => `${kind}: ${t}`) });
   });
 };
+
+const GEMINI_DIMENSIONS = 768;
+
+function normalize(vector: number[]): number[] {
+  const norm = Math.hypot(...vector) || 1;
+  return vector.map((x) => x / norm);
+}
+
+/** Эмбеддинги Gemini. При урезанной размерности вектор не нормирован, поэтому нормируем сами. */
+const geminiEmbed: Embedder = async (texts, kind) => {
+  if (texts.length === 0) return [];
+  const response = await getGemini().models.embedContent({
+    model: ragConfig.geminiEmbeddingModel,
+    contents: texts,
+    config: {
+      taskType: kind === "query" ? "RETRIEVAL_QUERY" : "RETRIEVAL_DOCUMENT",
+      outputDimensionality: GEMINI_DIMENSIONS,
+    },
+  });
+  const vectors = response.embeddings?.map((e) => e.values ?? []) ?? [];
+  if (vectors.length !== texts.length || vectors.some((v) => v.length === 0)) {
+    throw new Error("Gemini вернул неполный ответ на запрос эмбеддингов");
+  }
+  return vectors.map(normalize);
+};
+
+export const embed: Embedder = ragConfig.embeddingProvider === "local" ? localEmbed : geminiEmbed;

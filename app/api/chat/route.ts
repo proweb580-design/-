@@ -1,5 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { ApiError } from "@google/genai";
 import { sourceRefs, streamAnswer, type ChatTurn } from "@/lib/rag/answer";
+import { MissingApiKeyError } from "@/lib/rag/gemini";
 import { EmbeddingUnavailableError } from "@/lib/rag/embed";
 import { retrieve } from "@/lib/rag/knowledge-base";
 
@@ -42,17 +43,17 @@ function errorMessage(error: unknown): string {
       ? "Поиск по документам временно не работает. Оставьте заявку, и менеджер ответит на ваш вопрос."
       : error.message;
   }
-  if (error instanceof Anthropic.AuthenticationError) {
-    return "Ассистент не подключён к Claude API: проверьте ANTHROPIC_API_KEY в файле .env.";
-  }
-  if (error instanceof Anthropic.RateLimitError) {
-    return "Сейчас слишком много запросов. Попробуйте через минуту.";
-  }
-  if (error instanceof Anthropic.APIConnectionError) {
-    return "Нет связи с Claude API. Проверьте интернет и попробуйте ещё раз.";
-  }
-  if (error instanceof Anthropic.APIError) {
+  const keyHint = "Ассистент не подключён к Gemini API: проверьте GEMINI_API_KEY в файле .env.";
+  if (error instanceof MissingApiKeyError) return keyHint;
+  if (error instanceof ApiError) {
+    // Неверный ключ Gemini возвращает 400 с текстом «API key not valid».
+    if (error.status === 401 || error.status === 403 || /api key/i.test(error.message)) return keyHint;
+    if (error.status === 429) return "Сейчас слишком много запросов. Попробуйте через минуту.";
+    if (error.status === 404) return "Модель из GEMINI_MODEL не найдена. Проверьте её название в файле .env.";
     return "Сервис ответов временно недоступен. Попробуйте ещё раз чуть позже.";
+  }
+  if (error instanceof TypeError && /fetch/i.test(error.message)) {
+    return "Нет связи с Gemini API. Проверьте интернет и попробуйте ещё раз.";
   }
   return "Что-то пошло не так при подготовке ответа.";
 }
